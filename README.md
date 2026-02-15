@@ -169,4 +169,6 @@ run();
 # 💡 The Backoff Formula
 
 $$waitTime = (baseDelay \times backoffFactor^{attempt}) \times (1 \pm jitter)$$
-<center><code>waitTime = (baseDelay * backoffFactor^attempt) * (1 ± jitter)</code></center>
+<p align="center">
+    <code>waitTime = (baseDelay * backoffFactor^attempt) * (1 ± jitter)</code>
+</p>

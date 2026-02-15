@@ -12,6 +12,7 @@ export interface RetryMiniOptions {
  * Retry any function with optional retries, delay, backoff, and jitter (to prevent spamming).
  *
  * @param task Function to run (can be async or sync). Receives the attempt number.
+ *
  * @param options Optional configuration object.
  * @param options.maxRetries Maximum retry attempts. Default is 3.
  * @param options.baseDelay Base delay in milliseconds. Default is 0.
