@@ -1,4 +1,4 @@
-# ensure-dir
+# retry-mini
 
 <p align="center"><a href="https://nodei.co/npm/retry-mini/"><img src="https://nodei.co/npm/retry-mini.png"></a></a></p>
 <p align="center">
