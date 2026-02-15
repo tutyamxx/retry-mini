@@ -1,0 +1,48 @@
+# This workflow will run tests using node and then publish a package to npm using Trusted Publishing (OIDC)
+# For more information see: https://docs.npmjs.com/using-private-packages-in-a-ci-cd-workflow
+
+name: retry-mini NPM Package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Skip Dependabot PRs for CI/CD
+    if: ${{ github.actor != 'dependabot[bot]' }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - run: npm install
+      - run: npm test
+
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+
+    # Skip Dependabot PRs
+    if: ${{ github.actor != 'dependabot[bot]' }}
+
+    # Required for OIDC Trusted Publishing
+    permissions:
+      contents: read
+      id-token: write # 👈 REQUIRED for Trusted Publishing
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          registry-url: https://registry.npmjs.org/
+
+      - run: npm install
+      - run: npm publish

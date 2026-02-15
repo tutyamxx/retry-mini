@@ -1,0 +1,31 @@
+{
+  "name": "retry-mini",
+  "version": "1.0.0",
+  "description": "↻ Tiny dependency-free async retry utility with backoff, delay, and conditional retry support.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    }
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tutyamxx/retry-mini.git"
+  },
+  "keywords": [],
+  "author": "tuty",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tutyamxx/retry-mini/issues"
+  },
+  "homepage": "https://github.com/tutyamxx/retry-mini#readme",
+  "devDependencies": {
+    "jest": "^30.2.0"
+  }
+}
