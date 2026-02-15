@@ -4,8 +4,8 @@ export interface RetryMiniOptions {
     backoffFactor?: number;
     jitter?: number;
 
-    shouldRetry?: (error: any, attemptNumber: number) => boolean;
-    onRetry?: (error: any, attemptNumber: number) => void;
+    shouldRetry?: (error: any, attemptNumber: number) => boolean | Promise<boolean>;
+    onRetry?: (error: any, attemptNumber: number) => void | Promise<void>;
 }
 
 /**
@@ -23,7 +23,7 @@ export interface RetryMiniOptions {
  *
  * @returns A Promise resolving to the task result, or rejecting with the last error.
  */
-declare function retryMini<T>(task: (attemptNumber: number) => Promise<T> | T, options?: RetryMiniOptions): Promise<T>;
+declare function retryMini<T>(task: (attemptNumber: number) => T | Promise<T>, options?: RetryMiniOptions): Promise<T>;
 
 export { retryMini };
 export default retryMini;

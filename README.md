@@ -154,6 +154,7 @@ const flakyTask = async (attempt) => {
 
         throw error;
     }
+
     return "Success! 🎉";
 };
 
@@ -167,7 +168,7 @@ const run = async () => {
 
             onRetry: async (err, i) => {
                 // --| Perform an async check if needed
-                console.log(`Waiting for retry #${i}...`);
+                console.log(`⚠️  Attempt ${i} failed. Performing async cleanup...`);
             },
             shouldRetry: async (err) => {
                 // --| Perform an async check if needed
@@ -238,7 +239,7 @@ const run = async (): Promise<void> => {
 
             onRetry: async (err: FlakyError, i: number) => {
                 // --| Perform an async check if needed
-                console.log(`Attempt ${i} failed. Resolving async logic...`);
+                console.log(`⚠️  Attempt ${i} failed. Performing async cleanup...`);
             },
             shouldRetry: async (err: FlakyError) => {
                 // --| Perform an async check if needed
