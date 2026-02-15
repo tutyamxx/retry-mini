@@ -1,6 +1,6 @@
 /**
  *  retry-mini - ↻ Tiny dependency-free async retry utility with backoff, delay, and conditional retry support.
- *  @version: v1.0.3
+ *  @version: v1.0.4
  *  @link: https://github.com/tutyamxx/retry-mini
  *  @license: MIT
  **/

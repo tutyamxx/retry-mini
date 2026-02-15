@@ -20,6 +20,8 @@ In a world of bloated dependencies, `retry-mini` focuses on being lightweight ye
 | **🔍 Logic-Aware** | `shouldRetry` allows you to stop retrying on 404s but continue on 500s. |
 | **⌨️ Fully Typed** | TypeScript definitions included for perfect IDE autocompletion. |
 
+---
+
 # ⚙️ Configuration Options
 
 | Option | Type | Default | Description |
@@ -30,6 +32,8 @@ In a world of bloated dependencies, `retry-mini` focuses on being lightweight ye
 | **`jitter`** | `number` | `0` | Fractional jitter to randomize waitTime (`0.5` = `±50%`) |
 | **`shouldRetry`** | `function` | `() => true` | `(error, attempt) => boolean`. Logic to stop/continue retrying. |
 | **`onRetry`** | `function` | `undefined` | `(error, attempt) => void`. Hook for logging or side-effects. |
+
+---
 
 # 📦 Install via [NPM](https://www.npmjs.com/package/retry-mini)
 

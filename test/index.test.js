@@ -151,7 +151,7 @@ describe('retryMini - Jitter Logic', () => {
         expect(task).toHaveBeenCalledTimes(2);
     });
 
-    test('applies jitter correctly at the upper bound (Math.random = 1)', async () => {
+    test('Applies jitter correctly at the upper bound (Math.random = 1)', async () => {
         // --| Force Math.random to return 1
         Math.random.mockReturnValue(0.9999);
 
@@ -170,7 +170,7 @@ describe('retryMini - Jitter Logic', () => {
         expect(task).toHaveBeenCalledTimes(2);
     });
 
-    test('ensures waitTime is never negative even with high jitter', async () => {
+    test('Ensures waitTime is never negative even with high jitter', async () => {
         // --| Force Math.random to 0 and use a jitter > 1
         Math.random.mockReturnValue(0);
         const task = jest.fn().mockRejectedValueOnce(new Error('Fail')).mockResolvedValue('Done');
