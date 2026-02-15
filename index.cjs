@@ -1,4 +1,12 @@
 /**
+ *  retry-mini - ↻ Tiny dependency-free async retry utility with backoff, delay, and conditional retry support.
+ *  @version: v1.0.2
+ *  @link: https://github.com/tutyamxx/retry-mini
+ *  @license: MIT
+ **/
+
+
+/**
  * CommonJS Wrapper for retry-mini
  * We use dynamic import() to bridge the gap from CJS to ESM.
  */
