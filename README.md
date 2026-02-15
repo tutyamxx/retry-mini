@@ -46,6 +46,33 @@ $ npm i retry-mini
 - See examples below
 
 ## CommonJS
+
+### Simple
+
+```javascript
+const retryMini = require('retry-mini');
+
+(async () => {
+    try {
+        const result = await retryMini(async (attempt) => {
+            // --| Your task logic here
+            console.log(`Attempt #${attempt + 1}`);
+
+            if (Math.random() < 0.7) {
+                throw new Error('Try again');
+            }
+
+            return 'Success!';
+        });
+
+        console.log('Result:', result);
+    } catch (err) {
+        console.error('Failed after retries:', err.message);
+    }
+})();
+```
+
+### Complex
 ```javascript
 const retryMini = require('retry-mini');
 
@@ -84,6 +111,32 @@ run();
 ```
 
 ## ESM
+
+### Simple
+```javascript
+import retryMini from 'retry-mini';
+
+(async () => {
+    try {
+        const result = await retryMini(async (attempt) => {
+            // --| Your task logic here
+            console.log(`Attempt #${attempt + 1}`);
+
+            if (Math.random() < 0.7) {
+                throw new Error('Try again');
+            }
+
+            return 'Success!';
+        });
+
+        console.log('Result:', result);
+    } catch (err) {
+        console.error('Failed after retries:', err.message);
+    }
+})();
+```
+
+### Complex
 ```javascript
 import retryMini from 'retry-mini';
 
@@ -122,6 +175,32 @@ run();
 ```
 
 ## TypeScript
+
+### Simple
+```javascript
+import retryMini from 'retry-mini';
+
+(async () => {
+    try {
+        const result = await retryMini(async (attempt: number) => {
+            // --| Your task logic here
+            console.log(`Attempt #${attempt + 1}`);
+
+            if (Math.random() < 0.7) {
+                throw new Error('Try again');
+            }
+
+            return 'Success!';
+        });
+
+        console.log('Result:', result);
+    } catch (err: any) {
+        console.error('Failed after retries:', err.message);
+    }
+})();
+```
+
+### Complex
 ```javascript
 import retryMini from 'retry-mini';
 
