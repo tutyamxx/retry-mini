@@ -96,9 +96,16 @@ const run = async () => {
             maxRetries: 5,
             baseDelay: 1000,
             backoffFactor: 2,
-            jitter: 0.2, // --| Adds randomness to the 1s, 2s, 4s delays
-            onRetry: (err, i) => console.log(`⚠️  Attempt ${i} failed. Waiting for next try...`),
-            shouldRetry: (err) => err.code === 'BUSY'
+            jitter: 0.2,
+
+            onRetry: async (err, i) => {
+                // --| Perform an async check if needed
+                console.log(`⚠️  Attempt ${i} failed. Performing async cleanup...`);
+            },
+            shouldRetry: async (err) => {
+                // --| Perform an async check if needed
+                return err.code === 'BUSY';
+            }
         });
 
         console.log(`\n✅ Result: ${result}`);
@@ -140,18 +147,14 @@ import retryMini from 'retry-mini';
 ```javascript
 import retryMini from 'retry-mini';
 
-// --| A flaky function that only succeeds 20% of the time
 const flakyTask = async (attempt) => {
-    console.log(`[${new Date().toLocaleTimeString()}] 🚀 Executing attempt #${attempt}...`);
-
     if (Math.random() > 0.2) {
         const error = new Error('Service Temporarily Unavailable');
         error.code = 'BUSY';
 
         throw error;
     }
-
-    return "Successfully processed data! 🎉";
+    return "Success! 🎉";
 };
 
 const run = async () => {
@@ -160,14 +163,21 @@ const run = async () => {
             maxRetries: 5,
             baseDelay: 1000,
             backoffFactor: 2,
-            jitter: 0.2, // --| Adds randomness to the 1s, 2s, 4s delays
-            onRetry: (err, i) => console.log(`⚠️  Attempt ${i} failed. Waiting for next try...`),
-            shouldRetry: (err) => err.code === 'BUSY'
+            jitter: 0.2,
+
+            onRetry: async (err, i) => {
+                // --| Perform an async check if needed
+                console.log(`Waiting for retry #${i}...`);
+            },
+            shouldRetry: async (err) => {
+                // --| Perform an async check if needed
+                return err.code === 'BUSY';
+            }
         });
 
-        console.log(`\n✅ Result: ${result}`);
+        console.log(`✅ Result: ${result}`);
     } catch (err) {
-        console.error(`\n❌ Script failed after all retries: ${err.message}`);
+        console.error(`❌ Failed: ${err.message}`);
     }
 };
 
@@ -183,7 +193,6 @@ import retryMini from 'retry-mini';
 (async () => {
     try {
         const result = await retryMini(async (attempt: number) => {
-            // --| Your task logic here
             console.log(`Attempt #${attempt + 1}`);
 
             if (Math.random() < 0.7) {
@@ -204,20 +213,15 @@ import retryMini from 'retry-mini';
 ```javascript
 import retryMini from 'retry-mini';
 
-/**
- * Custom error type to handle the 'code' property
- */
 interface FlakyError extends Error {
     code?: string;
 }
 
-// --| A flaky function that only succeeds 20% of the time
 const flakyTask = async (attempt: number): Promise<string> => {
-    console.log(`[${new Date().toLocaleTimeString()}] 🚀 Executing attempt #${attempt}...`);
-
     if (Math.random() > 0.2) {
         const error = new Error('Service Temporarily Unavailable') as FlakyError;
         error.code = 'BUSY';
+
         throw error;
     }
 
@@ -230,9 +234,16 @@ const run = async (): Promise<void> => {
             maxRetries: 5,
             baseDelay: 1000,
             backoffFactor: 2,
-            jitter: 0.2, // --| Adds randomness to the 1s, 2s, 4s delays
-            onRetry: (err: FlakyError, i: number) => console.log(`⚠️  Attempt ${i} failed. Waiting for next try...`),
-            shouldRetry: (err: FlakyError) => err.code === 'BUSY'
+            jitter: 0.2,
+
+            onRetry: async (err: FlakyError, i: number) => {
+                // --| Perform an async check if needed
+                console.log(`Attempt ${i} failed. Resolving async logic...`);
+            },
+            shouldRetry: async (err: FlakyError) => {
+                // --| Perform an async check if needed
+                return err.code === 'BUSY';
+            }
         });
 
         console.log(`\n✅ Result: ${result}`);

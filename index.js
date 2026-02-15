@@ -1,6 +1,6 @@
 /**
  *  retry-mini - ↻ Tiny dependency-free async retry utility with backoff, delay, and conditional retry support.
- *  @version: v1.0.7
+ *  @version: v1.0.8
  *  @link: https://github.com/tutyamxx/retry-mini
  *  @license: MIT
  **/
@@ -39,13 +39,13 @@ const retryMini = async (task, options = {}) => {
         } catch (error) {
             lastError = error;
 
-            const retryAllowed = shouldRetry?.(error, attemptNumber) ?? true;
+            const retryAllowed = await shouldRetry?.(error, attemptNumber) ?? true;
 
             if (!retryAllowed || attemptNumber === maxRetries) {
                 break;
             }
 
-            onRetry?.(error, attemptNumber);
+            await onRetry?.(error, attemptNumber);
 
             // --| Calculate exponential backoff
             let waitTime = baseDelay * Math.max(1, backoffFactor ** attemptNumber);

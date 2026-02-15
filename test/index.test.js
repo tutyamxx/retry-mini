@@ -66,6 +66,23 @@ describe('retryMini', () => {
         expect(shouldRetry).toHaveBeenCalledWith(expect.any(Error), 0);
     });
 
+    test('Supports asynchronous shouldRetry checks', async () => {
+        const task = jest.fn().mockRejectedValueOnce(new Error('Temporary')).mockResolvedValue('Fixed');
+        const shouldRetry = jest.fn(async () => {
+            await new Promise(resolve => setTimeout(resolve, 10)); // Simulate async work
+            return true;
+        });
+
+        const promise = retryMini(task, { maxRetries: 1, baseDelay: 0, shouldRetry });
+
+        // --| Advance past the internal check timeout
+        await jest.advanceTimersByTimeAsync(10);
+
+        const result = await promise;
+        expect(result).toBe('Fixed');
+        expect(shouldRetry).toHaveBeenCalledTimes(1);
+    });
+
     test('Calls onRetry callback before each attempt', async () => {
         const task = jest.fn().mockRejectedValueOnce(new Error('Error 1')).mockResolvedValue('Success');
         const onRetry = jest.fn();
@@ -74,6 +91,20 @@ describe('retryMini', () => {
 
         expect(onRetry).toHaveBeenCalledTimes(1);
         expect(onRetry).toHaveBeenCalledWith(expect.any(Error), 0);
+    });
+
+    test('Supports asynchronous onRetry callbacks', async () => {
+        let sideEffect = false;
+        const task = jest.fn().mockRejectedValueOnce(new Error('Fail')).mockResolvedValue('Done');
+        const onRetry = async () => {
+            await Promise.resolve();
+            sideEffect = true;
+        };
+
+        await retryMini(task, { maxRetries: 1, baseDelay: 0, onRetry });
+
+        expect(sideEffect).toBe(true);
+        expect(task).toHaveBeenCalledTimes(2);
     });
 
     test('Receives the correct attempt number in the task', async () => {
@@ -141,13 +172,15 @@ describe('retryMini - Jitter Logic', () => {
         // --| waitTime = 100 * (1 - 0.5) = 50
         const promise = retryMini(task, { baseDelay, jitter, maxRetries: 1 });
 
-        await Promise.resolve()
+        // --| Allow internal awaits (shouldRetry, onRetry) to flush
+        await jest.advanceTimersByTimeAsync(0);
         expect(jest.getTimerCount()).toBe(1);
 
         // --| Advance exactly 50ms
-        jest.advanceTimersByTime(50);
+        await jest.advanceTimersByTimeAsync(50);
 
-        await promise;
+        const result = await promise;
+        expect(result).toBe('Done');
         expect(task).toHaveBeenCalledTimes(2);
     });
 
@@ -163,10 +196,11 @@ describe('retryMini - Jitter Logic', () => {
         // --| waitTime = 100 * (1 + 0.5) = 150
         const promise = retryMini(task, { baseDelay, jitter, maxRetries: 1 });
 
-        await Promise.resolve();
-        jest.advanceTimersByTime(150);
+        await jest.advanceTimersByTimeAsync(0);
+        await jest.advanceTimersByTimeAsync(150);
 
-        await promise;
+        const result = await promise;
+        expect(result).toBe('Done');
         expect(task).toHaveBeenCalledTimes(2);
     });
 
@@ -179,10 +213,10 @@ describe('retryMini - Jitter Logic', () => {
         // --| We want to ensure the code doesn't crash.
         const promise = retryMini(task, { baseDelay: 100, jitter: 2, maxRetries: 1 });
 
-        await Promise.resolve();
+        // --| Flush microtasks to reach the "if (waitTime > 0)" check
+        await jest.advanceTimersByTimeAsync(0);
 
         // --| If waitTime becomes negative or 0, it shouldn't set a timer
-        // --| or it should treat it as 0.
         expect(jest.getTimerCount()).toBe(0);
         await promise;
     });
