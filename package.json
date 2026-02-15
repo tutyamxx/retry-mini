@@ -1,6 +1,6 @@
 {
   "name": "retry-mini",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "↻ Tiny dependency-free async retry utility with backoff, delay, and conditional retry support.",
   "type": "module",
   "main": "index.js",
@@ -18,7 +18,22 @@
     "type": "git",
     "url": "git+https://github.com/tutyamxx/retry-mini.git"
   },
-  "keywords": [],
+  "keywords": [
+    "retry",
+    "retry-mini",
+    "backoff",
+    "exponential-backoff",
+    "jitter",
+    "async-retry",
+    "promise-retry",
+    "resilience",
+    "error-handling",
+    "esm",
+    "commonjs",
+    "typescript",
+    "zero-dependencies",
+    "lightweight"
+  ],
   "author": "tuty",
   "license": "MIT",
   "bugs": {
