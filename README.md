@@ -70,7 +70,7 @@ const run = async () => {
             baseDelay: 1000,
             backoffFactor: 2,
             jitter: 0.2, // --| Adds randomness to the 1s, 2s, 4s delays
-            onRetry: (err, i) => console.warn(`⚠️  Attempt ${i} failed. Waiting for next try...`),
+            onRetry: (err, i) => console.log(`⚠️  Attempt ${i} failed. Waiting for next try...`),
             shouldRetry: (err) => err.code === 'BUSY'
         });
 
@@ -108,7 +108,7 @@ const run = async () => {
             baseDelay: 1000,
             backoffFactor: 2,
             jitter: 0.2, // --| Adds randomness to the 1s, 2s, 4s delays
-            onRetry: (err, i) => console.warn(`⚠️  Attempt ${i} failed. Waiting for next try...`),
+            onRetry: (err, i) => console.log(`⚠️  Attempt ${i} failed. Waiting for next try...`),
             shouldRetry: (err) => err.code === 'BUSY'
         });
 
@@ -152,8 +152,7 @@ const run = async (): Promise<void> => {
             baseDelay: 1000,
             backoffFactor: 2,
             jitter: 0.2, // --| Adds randomness to the 1s, 2s, 4s delays
-            onRetry: (err: FlakyError, i: number) =>
-                console.warn(`⚠️  Attempt ${i} failed. Waiting for next try...`),
+            onRetry: (err: FlakyError, i: number) => console.log(`⚠️  Attempt ${i} failed. Waiting for next try...`),
             shouldRetry: (err: FlakyError) => err.code === 'BUSY'
         });
 
@@ -170,3 +169,4 @@ run();
 # 💡 The Backoff Formula
 
 $$waitTime = (baseDelay \times backoffFactor^{attempt}) \times (1 \pm jitter)$$
+<center><code>waitTime = (baseDelay * backoffFactor^attempt) * (1 ± jitter)</code></center>
