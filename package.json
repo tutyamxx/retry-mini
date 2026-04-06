@@ -1,6 +1,6 @@
 {
   "name": "retry-mini",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "↻ Tiny dependency-free async retry utility with backoff, delay, and conditional retry support.",
   "type": "module",
   "main": "index.js",
